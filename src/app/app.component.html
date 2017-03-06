@@ -1,3 +1,26 @@
 <h1>
   {{title}}
 </h1>
+<div class="container">
+  <div class="jumbotron">
+    <h4 class="display-3">Message Center</h4>
+    <p class="lead">This is a simple view that shows messages received from websocket</p>
+    <hr class="my-4">
+    <form>
+    <div class="input-group">
+      <input type="text" class="form-control" id="username" name="username" aria-describedby="username" placeholder="Username" [(ngModel)]="username">
+      <span class="input-group-btn">
+          <button class="btn btn-secondary" type="submit" (click)="connectMessaging()">Connect</button>
+        </span>
+    </div>
+    </form>
+    <textarea [(ngModel)]="messages" class="form-control" rows="20" id="message-center" readonly></textarea>
+    <form>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <input class="form-control" id="message" name="message" [(ngModel)]="message">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </form>
+  </div>
+</div>
