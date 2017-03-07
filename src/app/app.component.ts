@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {MessagingService} from "./stompjs/messaging.service";
-import {isUndefined} from "util";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,8 @@ export class AppComponent {
   constructor(private messagingService: MessagingService) { }
 
   connectMessaging(): void {
-    this.messagingService.connectMessaging("//localhost:8080/connect");
+    let host = window.location.hostname;
+    this.messagingService.connectMessaging("//" + host + ":8080/connect");
     this.messagingService.getStatusObservable().subscribe(status => {
       if (this.username === "") {
         this.username = "Guest"

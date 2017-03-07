@@ -22,6 +22,8 @@ export class MessagingService {
   public connectMessaging(url: string) : any {
     let self = this;
     let webSocket = new SockJS(url);
+    //If you do not want to use SockJS
+    //Make sure you setup spring websocket config registry endpoint to not use sockJS
     //let webSocket = new WebSocket(url);
     this.stompClient = Stomp.over(webSocket);
     this.stompClient.debug = null;
