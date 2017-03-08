@@ -13,7 +13,7 @@ export class AppComponent {
 
   connectMessaging(): void {
     let host = window.location.hostname;
-    this.messagingService.connectMessaging("//" + host + ":8080/connect");
+    this.messagingService.connectMessaging("//" + host + "/api/connect");
     this.messagingService.getStatusObservable().subscribe(status => {
       if (this.username === "") {
         this.username = "Guest"
