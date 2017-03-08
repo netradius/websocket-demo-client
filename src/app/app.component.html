@@ -10,7 +10,8 @@
     <div class="input-group">
       <input type="text" class="form-control" id="username" name="username" aria-describedby="username" placeholder="Username" [(ngModel)]="username">
       <span class="input-group-btn">
-          <button class="btn btn-secondary" type="submit" (click)="connectMessaging()">Connect</button>
+          <button class="btn btn-secondary" type="submit" (click)="connectMessaging()" *ngIf="!connected">Connect</button>
+          <button class="btn btn-secondary" type="submit" (click)="disconnectMessaging()" *ngIf="connected">Disconnect</button>
         </span>
     </div>
     </form>

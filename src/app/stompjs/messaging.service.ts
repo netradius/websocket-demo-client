@@ -19,11 +19,12 @@ export class MessagingService {
 
   constructor(private http: Http) { }
 
-  public connectMessaging(url: string) : any {
+  public connectMessaging(url: string) : void {
     let self = this;
     let webSocket = new SockJS(url);
     //If you do not want to use SockJS
     //Make sure you setup spring websocket config registry endpoint to not use sockJS
+    //and prepend your url string with ws://
     //let webSocket = new WebSocket(url);
     this.stompClient = Stomp.over(webSocket);
     this.stompClient.debug = null;
@@ -32,7 +33,13 @@ export class MessagingService {
       self.stompClient.subscribe('/topic/messages', function (res) {
           self.stompMessage.next(JSON.parse(res.body));
       });
-      return frame;
+    });
+  }
+
+  public disconnectMessaging(): any {
+    let self = this;
+    this.stompClient.disconnect(function() {
+      self.stompConnectionStatus.next(null);
     });
   }
 

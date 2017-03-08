@@ -13,17 +13,34 @@ export class AppComponent {
 
   connectMessaging(): void {
     let host = window.location.hostname;
-    this.messagingService.connectMessaging("//" + host + "/api/connect");
-    this.messagingService.getStatusObservable().subscribe(status => {
-      if (this.username === "") {
-        this.username = "Guest"
+    //Comment this out if you are running in production
+    this.messagingService.connectMessaging("//localhost:8080/api/connect");
+    //Uncomment this if you are running in production
+    //this.messagingService.connectMessaging("//" + host + "/api/connect");
+
+    this.connectionSubscription = this.messagingService.getStatusObservable().subscribe(status => {
+      if (status && status.command === "CONNECTED") {
+        this.connected = true;
+        if (this.username === "") {
+          this.username = "Guest"
+        }
+        this.messages += status.command + " as " + this.username + "\n";
+
+      } else {
+        this.connected = false;
+        this.messages += "Disconnected\n";
       }
-      this.messages += status.command + " as " + this.username + "\n";
     });
     this.messagingService.getObservable().subscribe(payload => {
       this.message = "";
       this.messages += payload.username + " (" + this.formatDateTime(new Date(payload.dateTime))  + "): " + payload.message + "\n";
     });
+  }
+
+  disconnectMessaging(): void {
+    this.messagingService.disconnectMessaging();
+    this.connectionSubscription.unsubscribe();
+
   }
 
   sendMessage():void {
@@ -38,4 +55,6 @@ export class AppComponent {
   username:string = "";
   message: string = "";
   messages:string = "";
+  connected:boolean = false;
+  connectionSubscription: any;
 }
