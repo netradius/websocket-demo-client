@@ -12,11 +12,7 @@ export class AppComponent {
   constructor(private messagingService: MessagingService) { }
 
   connectMessaging(): void {
-    let host = window.location.hostname;
-    //Comment this out if you are running in production
-    this.messagingService.connectMessaging("//localhost:8080/api/connect");
-    //Uncomment this if you are running in production
-    //this.messagingService.connectMessaging("//" + host + "/api/connect");
+    this.messagingService.connectMessaging();
 
     this.connectionSubscription = this.messagingService.getStatusObservable().subscribe(status => {
       if (status && status.command === "CONNECTED") {
@@ -45,6 +41,11 @@ export class AppComponent {
 
   sendMessage():void {
     this.messagingService.sendMessage(this.username, this.message);
+  }
+
+  sendPing():void {
+    this.messagingService.sendPing(this.username === "" ? "Guest":this.username)
+      .subscribe();
   }
 
   private formatDateTime(date: Date):string {
